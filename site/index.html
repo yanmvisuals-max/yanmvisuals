@@ -1,0 +1,1084 @@
+<!-- Placeholder copy. Full responsive rewrite requested. -->
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yanmvisuals | Portfolio</title>
+    <!-- Utilisation de Tailwind CSS pour un prototypage rapide et un design moderne -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Polices Google : Bebas Neue (marque), Syne (titres) et Inter (texte) -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Ajout de Lenis pour un défilement (smooth scroll) ultra-fluide -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+
+    <script>
+        // Configuration de Tailwind pour ajouter nos couleurs personnalisées
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#f5f4f0',
+                        'dark': '#1c1b1a',
+                        'accent': '#8a8373'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                        brand: ['"Bebas Neue"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Styles personnalisés pour la fluidité et les effets */
+        body {
+            background-color: #f5f4f0;
+            color: #1c1b1a;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Lenis base styles */
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+
+        /* Animation classique pour le texte */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* NOUVEAU: Animation fluide spécifique pour les photos (Scale + Translate) */
+        .reveal-photo {
+            opacity: 0;
+            transform: translateY(60px) scale(0.92);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .reveal-photo.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Effet de survol sur la galerie repensé (plus doux) */
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 4px; /* Léger arrondi pour un côté premium */
+            background-color: #e5e4e0; /* Fond de chargement */
+            break-inside: avoid; /* Empêche une photo d'être coupée entre deux colonnes */
+            margin-bottom: 1rem;
+            width: 100%;
+            display: inline-block; /* Nécessaire pour le layout en colonnes (masonry) */
+        }
+
+        /* Mise en page "masonry" : les photos gardent leur format d'origine
+           (aucun recadrage) et se répartissent en colonnes de largeur fixe.
+           Comme la largeur est bornée par la colonne, une photo ne peut jamais
+           devenir disproportionnée, quel que soit l'écran. */
+        .masonry {
+            column-count: 1;
+            column-gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .masonry { column-count: 2; }
+        }
+        @media (min-width: 1024px) {
+            .masonry { column-count: 3; }
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: auto; /* Format d'origine conservé, jamais rogné */
+            display: block;
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+
+        .gallery-item.fixed-size {
+            aspect-ratio: 4 / 5;
+            overflow: hidden;
+        }
+
+        .gallery-item.fixed-size img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item.hero-photo {
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9;
+            margin: 0;
+        }
+
+        .gallery-item.hero-photo img {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Section Automobile uniquement : rognage maîtrisé pour aligner les
+           photos en grille bien nette (3 portraits en haut + 1 horizontale
+           en pleine largeur en bas). */
+        .gallery-item.crop {
+            aspect-ratio: 3 / 4; /* portrait, pour les 3 vignettes du haut */
+            margin-bottom: 0; /* l'espacement est déjà géré par le gap de la grille */
+        }
+        .gallery-item.crop.wide {
+            aspect-ratio: 21 / 9; /* format large pour la photo horizontale du bas */
+        }
+        .gallery-item.crop img {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.04);
+        }
+
+        .video-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            background-color: #000;
+            min-height: 0;
+            cursor: default;
+        }
+        .gallery-item.video-card {
+            cursor: default !important;
+        }
+        .video-card:hover {
+            cursor: pointer;
+        }
+        .video-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            pointer-events: none;
+        }
+
+        .bubble-nav {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(28, 27, 26, 0.08);
+            border-radius: 3rem;
+            box-shadow: 0 20px 70px rgba(28, 27, 26, 0.08);
+            backdrop-filter: blur(18px);
+            animation: bubbleFadeIn 0.8s ease-out;
+        }
+
+        .bubble-nav .brand-link,
+        .bubble-nav .contact-link {
+            z-index: 10;
+        }
+
+        .nav-links a {
+            position: relative;
+            padding: 0.4rem 0.55rem;
+            border-radius: 999px;
+            transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(28, 27, 26, 0.96);
+            color: #f5f4f0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+        .mobile-menu-overlay.active {
+            display: flex;
+        }
+        .mobile-menu-panel {
+            width: min(100%, 420px);
+            text-align: center;
+            position: relative;
+        }
+        .mobile-menu-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            color: #fff;
+            padding: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+        .mobile-menu-close:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+        .mobile-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 3rem;
+        }
+        .mobile-menu-links a {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: color 0.2s ease;
+        }
+        .mobile-menu-links a:hover {
+            color: #8a8373;
+        }
+        .mobile-menu-contact {
+            display: inline-flex;
+            margin-top: 3rem;
+            padding: 1rem 2rem;
+            border-radius: 999px;
+            background: #fff;
+            color: #1c1b1a;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .mobile-menu-contact:hover {
+            transform: translateY(-2px);
+            background: #f1f1f1;
+        }
+
+        @media (max-width: 640px) {
+            .bubble-nav {
+                padding-left: 0.65rem;
+                padding-right: 0.65rem;
+            }
+            .bubble-nav > div {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: inline-flex;
+            }
+            .bubble-nav .contact-link {
+                display: none;
+            }
+            .nav-links a {
+                padding: 0.28rem 0.45rem;
+                font-size: 0.76rem;
+                line-height: 1.1;
+            }
+            .bubble-nav .brand-link,
+            .bubble-nav .contact-link {
+                position: static;
+                transform: none;
+            }
+            .bubble-nav .contact-link {
+                margin-top: 0;
+            }
+        }
+        .nav-links a:hover {
+            transform: translateY(-1px);
+            background-color: rgba(138, 131, 115, 0.08);
+        }
+
+        @keyframes bubbleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-12px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (max-width: 639px) {
+            .bubble-nav {
+                padding: 0.75rem 1rem;
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+            }
+        }
+        .video-controls {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            pointer-events: auto;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            padding: 0.75rem 1rem 0.75rem 0;
+            margin: auto 0 0;
+            background: transparent;
+        }
+        .video-card:hover .video-controls,
+        .video-card.controls-visible .video-controls {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+            margin: auto 0 0;
+            background: transparent;
+        }
+        @media (hover: none), (pointer: coarse) {
+            .video-card .video-controls {
+                transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            }
+        }
+        .video-controls button {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(0, 0, 0, 0.82);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+            box-shadow: none;
+            opacity: 0.98;
+        }
+        .video-controls button svg {
+            width: 1rem;
+            height: 1rem;
+            stroke-width: 2;
+        }
+        .video-controls button:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
+        }
+
+        /* Lightbox */
+        #lightbox {
+            backdrop-filter: blur(15px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .gallery-item { cursor: zoom-in; }
+        
+        #lightbox-img {
+            transition: transform 0.1s ease-out;
+            cursor: grab;
+            transform-origin: center;
+        }
+        #lightbox-img:active { cursor: grabbing; }
+    </style>
+</head>
+<body id="top" class="antialiased selection:bg-dark selection:text-off-white overflow-x-hidden">
+
+    <!-- Navigation (style bulle) -->
+    <nav id="bubble-nav" class="fixed inset-x-0 top-2 z-40 px-4 pointer-events-none transition-transform duration-300 ease-out">
+        <div class="bubble-nav max-w-7xl mx-auto px-4 py-3 sm:px-6 pointer-events-auto">
+            <div class="relative flex items-center justify-center w-full">
+                <a href="#" class="brand-link absolute left-4 font-display font-bold text-lg tracking-tight sm:text-xl">YM.</a>
+                <div class="nav-links hidden sm:flex items-center justify-center gap-3 text-[11px] font-medium sm:gap-4 sm:text-sm whitespace-nowrap max-w-[calc(100%-10rem)] mx-auto">
+                    <a href="#top" class="transition duration-200 hover:text-accent">Accueil</a>
+                    <a href="avis.html" class="transition duration-200 hover:text-accent">Avis</a>
+                    <a href="#work" class="transition duration-200 hover:text-accent">Portfolio</a>
+                    <a href="#expertise" class="transition duration-200 hover:text-accent">Expertise</a>
+                    <a href="#contact" class="transition duration-200 hover:text-accent">Contact</a>
+                </div>
+                <button id="mobile-menu-open" class="mobile-menu-btn absolute right-4 inline-flex items-center justify-center bg-dark text-off-white rounded-full p-2 sm:hidden" aria-label="Ouvrir le menu">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <!-- Bouton contact stylisé -->
+                <a href="#contact" class="contact-link absolute right-4 hidden px-3 py-1.5 bg-dark text-off-white rounded-full text-[11px] font-medium hover:bg-gray-800 transition-colors sm:inline-flex sm:px-5 sm:py-2 sm:text-sm sm:w-auto text-center">
+                    Me contacter
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay hidden">
+        <div class="mobile-menu-panel">
+            <button id="mobile-menu-close" class="mobile-menu-close" aria-label="Fermer le menu">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <nav class="mobile-menu-links">
+                <a href="#top">Accueil</a>
+                <a href="avis.html">Avis</a>
+                <a href="#work">Portfolio</a>
+                <a href="#expertise">Expertise</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <a href="#contact" class="mobile-menu-contact">Me contacter</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-28 px-4 sm:px-6 relative">
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <div class="mb-8">
+                <p class="text-accent font-semibold tracking-widest uppercase text-2xl md:text-3xl mb-3">Photographe & Vidéaste</p>
+                <p class="text-dark font-semibold uppercase tracking-[0.32em] text-sm md:text-base mb-2">Basé</p>
+                <p class="text-accent text-base md:text-lg font-medium">À Toulon & dans le Var</p>
+            </div>
+            <h1 class="font-brand text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-wide mb-8 uppercase">
+                Yanmvisuals
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 font-light max-w-2xl mx-auto mb-12">
+                Je crée des images qui racontent votre histoire, capturant l'essence de chaque moment avec une direction artistique unique.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#work" class="px-8 py-4 bg-dark text-off-white rounded-full font-medium hover:bg-gray-800 transition-colors w-full sm:w-auto relative z-10">
+                    Découvrir mes œuvres
+                </a>
+                <a href="#contact" class="px-8 py-4 border border-dark text-dark rounded-full font-medium hover:bg-gray-100 transition-colors w-full sm:w-auto relative z-10">
+                    Collaborons
+                </a>
+            </div>
+        </div>
+        
+        <!-- Indicateur de défilement -->
+        <a href="#work" class="absolute inset-x-0 bottom-4 mx-auto w-max animate-bounce text-gray-400 z-20">
+            <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </a>
+    </section>
+    
+    <!-- Section Portfolio -->
+    <section id="work" class="py-24 relative bg-off-white">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 reveal">
+                <div>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Portfolio</h2>
+                    <p class="text-gray-500 text-lg max-w-xl">Mes projets et réalisations, divisées par thèmes.</p>
+                </div>
+            </div>
+
+            <!-- Thème 1 : Automobile -->
+            <div class="mb-24">
+                <div class="flex items-center gap-6 mb-10 reveal flex-nowrap whitespace-nowrap">
+                    <span class="text-accent font-display font-bold text-2xl">01 //</span>
+                    <h3 class="font-display text-3xl font-bold uppercase tracking-wide">Automobile</h3>
+                    <div class="h-px bg-gray-300 flex-grow"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Utilisation de la nouvelle classe reveal-photo -->
+                    <div class="gallery-item crop cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/sfMnbLnk/11.jpg', 'Photo 11')">
+                        <img src="https://i.postimg.cc/sfMnbLnk/11.jpg" alt="Photo 11" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item crop cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/RCWP2Ysr/12.jpg', 'Photo 12')">
+                        <img src="https://i.postimg.cc/RCWP2Ysr/12.jpg" alt="Photo 12" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item crop cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/pVm03SGb/13.jpg', 'Photo 13')">
+                        <img src="https://i.postimg.cc/pVm03SGb/13.jpg" alt="Photo 13" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item crop wide sm:col-span-3 cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/FFYPw6WQ/14.jpg', 'Photo 14')">
+                        <img src="https://i.postimg.cc/FFYPw6WQ/14.jpg" alt="Photo 14" loading="lazy" class="block">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thème 2 : Sport -->
+            <div class="mb-24">
+                <div class="flex items-center gap-3 mb-10 reveal flex-nowrap whitespace-nowrap">
+                    <span class="text-accent font-display font-bold text-2xl">02 //</span>
+                    <h3 class="font-display text-2xl sm:text-3xl font-bold uppercase tracking-wide">Sport</h3>
+                    <div class="h-px bg-gray-300 flex-grow"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/XXMBPq2G/1.jpg', 'Photo 1')">
+                        <img src="https://i.postimg.cc/XXMBPq2G/1.jpg" alt="Photo 1" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/Sj0YPRZY/2.jpg', 'Photo 2')">
+                        <img src="https://i.postimg.cc/Sj0YPRZY/2.jpg" alt="Photo 2" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/jCVn128D/3.jpg', 'Photo 3')">
+                        <img src="https://i.postimg.cc/jCVn128D/3.jpg" alt="Photo 3" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/V5y0hv7b/4.jpg', 'Photo 4')">
+                        <img src="https://i.postimg.cc/V5y0hv7b/4.jpg" alt="Photo 4" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/Z0kvQnf6/5.jpg', 'Photo 5')">
+                        <img src="https://i.postimg.cc/Z0kvQnf6/5.jpg" alt="Photo 5" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/XXMBPq2K/6.jpg', 'Photo 6')">
+                        <img src="https://i.postimg.cc/XXMBPq2K/6.jpg" alt="Photo 6" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/BtWPzbhc/7.jpg', 'Photo 7')">
+                        <img src="https://i.postimg.cc/BtWPzbhc/7.jpg" alt="Photo 7" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/9z3wk0xY/8.jpg', 'Photo 8')">
+                        <img src="https://i.postimg.cc/9z3wk0xY/8.jpg" alt="Photo 8" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/Cdyn25v4/9.jpg', 'Photo 9')">
+                        <img src="https://i.postimg.cc/Cdyn25v4/9.jpg" alt="Photo 9" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/jCVn128M/10.jpg', 'Photo 10')">
+                        <img src="https://i.postimg.cc/jCVn128M/10.jpg" alt="Photo 10" loading="lazy" class="block">
+                    </div>
+                    <div id="sports-video" class="gallery-item video-card reveal-photo lg:col-start-2 lg:col-span-2 overflow-hidden">
+                        <video id="sports-video-player" src="https://zijuhrebmpovpavknzkk.supabase.co/storage/v1/object/public/videos/videobascketpro.mp4" autoplay muted loop playsinline preload="auto"></video>
+                        <div class="video-overlay">
+                            <div class="video-controls">
+                                <button type="button" id="sports-video-mute" aria-label="Activer/désactiver le son">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5z" />
+                                        <line x1="23" y1="9" x2="17" y2="15" />
+                                        <line x1="17" y1="9" x2="23" y2="15" />
+                                    </svg>
+                                </button>
+                                <button type="button" id="sports-video-fullscreen" aria-label="Plein écran">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                                        <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                                        <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                                        <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thème 3 : Autres Explorations -->
+            <div>
+                <div class="flex flex-wrap items-center gap-3 sm:gap-6 mb-10 reveal sm:flex-nowrap sm:whitespace-nowrap">
+                    <span class="text-accent font-display font-bold text-2xl">03 //</span>
+                    <h3 class="font-display text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wide">Autres Explorations</h3>
+                    <div class="h-px bg-gray-300 flex-grow"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/T2KkBs73/15.jpg', 'Photo 15')">
+                        <img src="https://i.postimg.cc/T2KkBs73/15.jpg" alt="Photo 15" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/PfC6073N/16.jpg', 'Photo 16')">
+                        <img src="https://i.postimg.cc/PfC6073N/16.jpg" alt="Photo 16" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/9XDxsk8f/17.jpg', 'Photo 17')">
+                        <img src="https://i.postimg.cc/9XDxsk8f/17.jpg" alt="Photo 17" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/pVm03SGp/18.jpg', 'Photo 18')">
+                        <img src="https://i.postimg.cc/pVm03SGp/18.jpg" alt="Photo 18" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/PrMxmSm9/20.jpg', 'Photo 20')">
+                        <img src="https://i.postimg.cc/PrMxmSm9/20.jpg" alt="Photo 20" loading="lazy" class="block">
+                    </div>
+                    <div class="gallery-item fixed-size cursor-pointer reveal-photo" onclick="openLightbox('https://i.postimg.cc/9FBMGLGs/21.jpg', 'Photo 21')">
+                        <img src="https://i.postimg.cc/9FBMGLGs/21.jpg" alt="Photo 21" loading="lazy" class="block">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Expertise -->
+    <section id="expertise" class="py-24 bg-white px-6 relative overflow-hidden rounded-t-[3rem]">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="mb-16 reveal">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Mon Expertise</h2>
+                <p class="text-gray-500 max-w-xl text-lg">Ce que je fais de mieux pour donner vie à vos projets visuels.</p>
+                <p class="text-gray-600 max-w-xl text-base mt-4">Photographe passionné à mes heures perdues, je pratique la photo par passion et j'ai réalisé des captations pour des événements, notamment pour les DJ <a href="https://www.instagram.com/rubi.77479/?hl=fr" target="_blank" rel="noopener noreferrer" class="font-brand uppercase tracking-[0.18em] text-dark hover:text-accent transition-colors duration-200 text-lg font-semibold">Rubi</a> &amp; <a href="https://www.instagram.com/skarlett.0s/?hl=fr" target="_blank" rel="noopener noreferrer" class="font-brand uppercase tracking-[0.18em] text-dark hover:text-accent transition-colors duration-200 text-lg font-semibold">Skarlett</a> et pour le <a href="https://www.instagram.com/htv_basket_club/?hl=fr" target="_blank" rel="noopener noreferrer" class="font-brand uppercase tracking-[0.18em] text-dark hover:text-accent transition-colors duration-200 text-lg font-semibold">HTV</a>.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="reveal border-t border-gray-200 pt-6 delay-[200ms]">
+                    <h3 class="font-display text-2xl font-bold mb-3">Photographie</h3>
+                    <p class="text-gray-600">Portraits, lifestyle et conceptualisation. Captuer un instant avec une lumière et des couleurs maitrisées.</p>
+                </div>
+                <div class="reveal border-t border-gray-200 pt-6 delay-[300ms]">
+                    <h3 class="font-display text-2xl font-bold mb-3">Création de Contenu</h3>
+                    <p class="text-gray-600">Des vidéos percutantes pensées spécifiquement pour les réseaux sociaux et la communication digitale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section id="contact" class="py-24 bg-dark text-off-white px-6 relative overflow-hidden rounded-t-[3rem]">
+        <div class="max-w-4xl mx-auto text-center reveal relative z-10">
+            <h2 class="font-display text-5xl md:text-7xl font-bold mb-8">Créons ensemble.</h2>
+            <p class="text-xl text-gray-400 mb-12">Disponible pour de nouveaux projets, collaborations ou simplement pour échanger.</p>
+            
+            <a href="mailto:yanmvisuals@gmail.com" class="inline-block px-10 py-5 bg-off-white text-dark font-bold rounded-full text-lg hover:scale-105 transition-transform duration-300 shadow-2xl">
+                yanmvisuals@gmail.com
+            </a>
+            
+            <div class="mt-16 flex justify-center space-x-8 text-gray-400">
+                <a href="https://www.instagram.com/yanm.photo?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="hover:text-off-white transition-colors">Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-gray-500 py-8 text-center text-sm border-t border-gray-800">
+        <p>&copy; 2026 Yanmvisuals. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-off-white/95 hidden flex-col items-center justify-center opacity-0" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-dark p-1 hover:bg-gray-200 rounded-full transition-colors duration-200 z-50 focus:outline-none" aria-label="Fermer" onclick="closeLightbox()">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <div class="relative w-full h-full p-4 flex items-center justify-center overflow-hidden">
+            <img id="lightbox-img" src="" alt="Image agrandie" class="max-w-full max-h-[90vh] object-contain shadow-2xl rounded-sm" onclick="event.stopPropagation()">
+        </div>
+    </div>
+
+    <script>
+        // --- 0. Masonry équilibré (évite les "vides" en bas de colonne) ---
+        // Le CSS "column-count" remplit les colonnes une par une dans l'ordre,
+        // ce qui laisse souvent un grand vide en bas de la colonne la plus courte.
+        // On répartit ici chaque photo dans la colonne la PLUS COURTE à cet instant,
+        // en se basant sur son ratio hauteur/largeur (les colonnes ayant toutes la
+        // même largeur, ce ratio suffit à estimer sa hauteur relative).
+        function getColumnCount() {
+            const w = window.innerWidth;
+            if (w >= 1024) return 3;
+            if (w >= 640) return 2;
+            return 1;
+        }
+
+        function getRatio(item) {
+            return new Promise((resolve) => {
+                if (item.dataset.ratio) {
+                    resolve(parseFloat(item.dataset.ratio));
+                    return;
+                }
+                const img = item.querySelector('img');
+                const probe = new Image();
+                probe.onload = () => {
+                    const r = probe.naturalHeight / probe.naturalWidth || 1;
+                    item.dataset.ratio = r;
+                    resolve(r);
+                };
+                probe.onerror = () => resolve(1);
+                probe.src = img.src;
+            });
+        }
+
+        async function layoutMasonry(container) {
+            // Toujours repartir de l'ordre original des photos (mémorisé au premier passage)
+            let items = Array.from(container.querySelectorAll('.gallery-item'));
+            if (items.length === 0) return;
+            items.forEach((item, i) => {
+                if (item.dataset.order === undefined) item.dataset.order = i;
+            });
+            items.sort((a, b) => parseInt(a.dataset.order) - parseInt(b.dataset.order));
+
+            // --- Extraction ponctuelle d'une "photo héros" ---
+            // Certaines galeries désignent une photo précise (via sa position dans
+            // la répartition en 3 colonnes) pour l'afficher à part, en grand, à la
+            // fin de la section. On ne le fait qu'une seule fois (mémorisé via
+            // heroExtracted) : une fois sortie du lot, elle reste en dehors.
+            const heroSelector = container.dataset.heroTarget;
+            if (heroSelector && !container.dataset.heroExtracted) {
+                const heroSlot = document.querySelector(heroSelector);
+                if (heroSlot) {
+                    const heroRatios = await Promise.all(items.map(getRatio));
+                    const simColumns = [[], [], []];
+                    const simHeights = [0, 0, 0];
+                    items.forEach((item, i) => {
+                        let shortest = 0;
+                        for (let c = 1; c < 3; c++) {
+                            if (simHeights[c] < simHeights[shortest]) shortest = c;
+                        }
+                        simColumns[shortest].push(item);
+                        simHeights[shortest] += heroRatios[i];
+                    });
+                    const heroCol = parseInt(container.dataset.heroCol, 10);
+                    const heroPos = parseInt(container.dataset.heroPos, 10);
+                    const heroItem = simColumns[heroCol] && simColumns[heroCol][heroPos];
+                    if (heroItem) {
+                        heroItem.classList.add('hero-photo');
+                        heroItem.style.marginBottom = '';
+                        heroSlot.appendChild(heroItem);
+                        items = items.filter((it) => it !== heroItem);
+                    }
+                }
+                container.dataset.heroExtracted = 'true';
+            }
+
+            const columnCount = getColumnCount();
+
+            if (columnCount === 1) {
+                container.style.display = '';
+                container.style.gap = '';
+                items.forEach((item) => container.appendChild(item));
+                return;
+            }
+
+            const ratios = await Promise.all(items.map(getRatio));
+
+            container.style.display = 'flex';
+            container.style.alignItems = 'flex-start';
+            container.style.gap = '1rem';
+            container.innerHTML = '';
+
+            const columns = [];
+            const columnHeights = new Array(columnCount).fill(0);
+            for (let c = 0; c < columnCount; c++) {
+                const col = document.createElement('div');
+                col.style.flex = '1 1 0';
+                col.style.minWidth = '0';
+                col.style.display = 'flex';
+                col.style.flexDirection = 'column';
+                col.style.gap = '1rem';
+                columns.push(col);
+                container.appendChild(col);
+            }
+
+            items.forEach((item, i) => {
+                let shortest = 0;
+                for (let c = 1; c < columnCount; c++) {
+                    if (columnHeights[c] < columnHeights[shortest]) shortest = c;
+                }
+                columns[shortest].appendChild(item);
+                columnHeights[shortest] += ratios[i];
+                item.style.marginBottom = '0'; // l'espacement est géré par le gap de la colonne
+            });
+        }
+
+        function initAllMasonry() {
+            document.querySelectorAll('.masonry').forEach((el) => layoutMasonry(el));
+        }
+
+        initAllMasonry();
+        window.addEventListener('load', initAllMasonry);
+
+        let masonryResizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(masonryResizeTimeout);
+            masonryResizeTimeout = setTimeout(initAllMasonry, 200);
+        });
+
+        // --- 1. Initialisation de Lenis (Smooth Scroll) ---
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing très doux (expoOut)
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: window.innerWidth >= 768, // Désactive Lenis sur mobile pour éviter le freeze
+            touchMultiplier: 1.5,
+            infinite: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        const bubbleNav = document.getElementById('bubble-nav');
+        if (bubbleNav) {
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const translateY = Math.min(scrollY * 0.15, 10);
+                bubbleNav.style.transform = `translateY(${translateY}px)`;
+            });
+        }
+
+        window.addEventListener('resize', () => {
+            lenis.options.smoothTouch = window.innerWidth >= 768;
+        });
+
+        // --- 1.b. Scroll lent pour tous les liens d'ancrage internes ---
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', (event) => {
+                const href = anchor.getAttribute('href');
+                if (!href || href === '#' || href.startsWith('#!')) return;
+                const target = document.querySelector(href);
+                if (target) {
+                    event.preventDefault();
+                    if (window.innerWidth < 768) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        lenis.scrollTo(target, {
+                            duration: 1.2,
+                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        });
+                    }
+                }
+            });
+        });
+
+        const mobileMenuOpen = document.getElementById('mobile-menu-open');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+        function toggleMobileMenu(open) {
+            if (!mobileMenuOverlay) return;
+            mobileMenuOverlay.classList.toggle('active', open);
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+
+        if (mobileMenuOpen) {
+            mobileMenuOpen.addEventListener('click', () => toggleMobileMenu(true));
+        }
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', () => toggleMobileMenu(false));
+        }
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener('click', (event) => {
+                if (event.target === mobileMenuOverlay) {
+                    toggleMobileMenu(false);
+                }
+            });
+            mobileMenuOverlay.querySelectorAll('a[href^="#"], a[href="avis.html"]').forEach((link) => {
+                link.addEventListener('click', () => toggleMobileMenu(false));
+            });
+        }
+
+        // --- 2. Animations au défilement optimisées (Intersection Observer) ---
+        // L'Intersection Observer est beaucoup plus performant et fluide que l'événement "scroll"
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // L'animation se déclenche quand 15% de l'élément est visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Ajoute un léger délai aléatoire si plusieurs images apparaissent en même temps pour un effet de cascade
+                    setTimeout(() => {
+                        entry.target.classList.add('active');
+                    }, Math.random() * 150); // Délai entre 0 et 150ms
+                    
+                    observer.unobserve(entry.target); // Ne déclenche l'animation qu'une seule fois
+                }
+            });
+        }, observerOptions);
+
+        // Cibler à la fois le texte (.reveal) et les photos (.reveal-photo)
+        document.querySelectorAll('.reveal, .reveal-photo').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Déclencher immédiatement les éléments déjà en haut de page au chargement
+        setTimeout(() => {
+            document.querySelectorAll('.reveal, .reveal-photo').forEach((el) => {
+                const rect = el.getBoundingClientRect();
+                if(rect.top < window.innerHeight) {
+                    el.classList.add('active');
+                }
+            });
+        }, 100);
+
+
+        // --- 3. Logique de la Lightbox & Zoom ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        let scale = 1;
+        let isDragging = false;
+        let startX, startY, translateX = 0, translateY = 0;
+
+        function updateTransform() {
+            lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        function resetZoom() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+
+        function openLightbox(imageSrc, imageAlt) {
+            lenis.stop(); // Met le smooth scroll en pause
+            
+            lightboxImg.src = imageSrc;
+            lightboxImg.alt = imageAlt;
+            resetZoom(); 
+            
+            lightbox.classList.remove('hidden');
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+                lightbox.classList.add('opacity-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lenis.start(); // Réactive le smooth scroll
+            
+            lightbox.classList.remove('opacity-100');
+            lightbox.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightboxImg.src = ''; 
+                resetZoom();
+            }, 500);
+            document.body.style.overflow = 'auto';
+        }
+
+        // Zoom (Molette)
+        lightbox.addEventListener('wheel', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            e.preventDefault();
+            const zoomSensitivity = 0.1;
+            const delta = e.deltaY < 0 ? 1 : -1;
+            scale = Math.max(1, Math.min(scale + (delta * zoomSensitivity * scale), 5));
+            if (scale === 1) { translateX = 0; translateY = 0; }
+            updateTransform();
+        }, { passive: false });
+
+        // Déplacement (Glisser)
+        lightboxImg.addEventListener('mousedown', (e) => {
+            if (scale > 1) {
+                e.preventDefault();
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+            }
+        });
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+        });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+        
+        // Double clic
+        lightboxImg.addEventListener('dblclick', () => {
+            if (scale > 1) { resetZoom(); } 
+            else { scale = 2.5; updateTransform(); }
+        });
+
+        // Touche Echap
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && !lightbox.classList.contains('hidden')) {
+                closeLightbox();
+            }
+        });
+
+        // Contrôles personnalisés pour la vidéo Sport
+        const sportsVideo = document.getElementById('sports-video-player');
+        const sportsVideoCard = document.getElementById('sports-video');
+        const sportsMuteButton = document.getElementById('sports-video-mute');
+        const sportsFullscreenButton = document.getElementById('sports-video-fullscreen');
+
+        if (sportsVideo && sportsVideoCard) {
+            let videoControlTimeout = null;
+            const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+            function updateVideoState() {
+                if (sportsVideo.paused) {
+                    sportsVideoCard.classList.remove('playing');
+                } else {
+                    sportsVideoCard.classList.add('playing');
+                }
+            }
+
+            function setMuteIcon() {
+                sportsMuteButton.innerHTML = sportsVideo.muted ?
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z" /><line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" /></svg>' :
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" /><path d="M19.07 4.93a9 9 0 0 1 0 14.14" /></svg>';
+            }
+
+            function toggleMute() {
+                sportsVideo.muted = !sportsVideo.muted;
+                setMuteIcon();
+            }
+
+            function openFullscreen() {
+                const card = sportsVideoCard;
+                if (card.requestFullscreen) {
+                    card.requestFullscreen();
+                } else if (card.webkitRequestFullscreen) {
+                    card.webkitRequestFullscreen();
+                } else if (card.msRequestFullscreen) {
+                    card.msRequestFullscreen();
+                }
+            }
+
+            function showVideoControls() {
+                sportsVideoCard.classList.add('controls-visible');
+                clearTimeout(videoControlTimeout);
+                videoControlTimeout = setTimeout(() => {
+                    sportsVideoCard.classList.remove('controls-visible');
+                }, 3500);
+            }
+
+            sportsVideoCard.addEventListener('click', function(event) {
+                if (event.target === sportsMuteButton || event.target === sportsFullscreenButton || sportsMuteButton.contains(event.target) || sportsFullscreenButton.contains(event.target)) {
+                    return;
+                }
+
+                if (isTouchDevice && !sportsVideoCard.classList.contains('controls-visible')) {
+                    showVideoControls();
+                    return;
+                }
+
+                if (sportsVideo.paused) {
+                    sportsVideo.play();
+                } else {
+                    sportsVideo.pause();
+                }
+                updateVideoState();
+            });
+
+            sportsMuteButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                toggleMute();
+            });
+            sportsFullscreenButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                openFullscreen();
+            });
+
+            sportsVideo.addEventListener('play', updateVideoState);
+            sportsVideo.addEventListener('pause', updateVideoState);
+            sportsVideo.addEventListener('ended', updateVideoState);
+            sportsVideo.muted = true;
+            setMuteIcon();
+            sportsVideo.play().catch(() => {});
+            updateVideoState();
+        }
+    </script>
+</body>
+</html>
