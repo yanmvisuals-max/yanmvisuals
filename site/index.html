@@ -360,9 +360,6 @@
             visibility: visible;
             transform: translateY(0);
         }
-            margin: auto 0 0;
-            background: transparent;
-        }
         @media (hover: none), (pointer: coarse) {
             .video-card .video-controls {
                 transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
@@ -417,7 +414,7 @@
                 <a href="#" class="brand-link absolute left-4 font-display font-bold text-lg tracking-tight sm:text-xl">YM.</a>
                 <div class="nav-links hidden sm:flex items-center justify-center gap-3 text-[11px] font-medium sm:gap-4 sm:text-sm whitespace-nowrap max-w-[calc(100%-10rem)] mx-auto">
                     <a href="#top" class="transition duration-200 hover:text-accent">Accueil</a>
-                    <a href="avis.html" class="transition duration-200 hover:text-accent">Avis</a>
+                    <a href="../avis.html" class="transition duration-200 hover:text-accent">Avis</a>
                     <a href="#work" class="transition duration-200 hover:text-accent">Portfolio</a>
                     <a href="#expertise" class="transition duration-200 hover:text-accent">Expertise</a>
                     <a href="#contact" class="transition duration-200 hover:text-accent">Contact</a>
@@ -439,7 +436,7 @@
             </button>
             <nav class="mobile-menu-links">
                 <a href="#top">Accueil</a>
-                <a href="avis.html">Avis</a>
+                <a href="../avis.html">Avis</a>
                 <a href="#work">Portfolio</a>
                 <a href="#expertise">Expertise</a>
                 <a href="#contact">Contact</a>
@@ -866,7 +863,7 @@
                     toggleMobileMenu(false);
                 }
             });
-            mobileMenuOverlay.querySelectorAll('a[href^="#"], a[href="avis.html"]').forEach((link) => {
+            mobileMenuOverlay.querySelectorAll('a[href^="#"], a[href$="avis.html"]').forEach((link) => {
                 link.addEventListener('click', () => toggleMobileMenu(false));
             });
         }
