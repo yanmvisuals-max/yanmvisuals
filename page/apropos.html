@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>À propos | Yanmvisuals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -11,33 +12,55 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Inter, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: #f5f4f0;
             color: #1c1b1a;
         }
         .container {
             text-align: center;
             padding: 2rem;
-            max-width: 760px;
+            max-width: 820px;
         }
         .title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 1rem;
-            font-weight: 800;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            margin-bottom: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            color: #1c1b1a;
+            text-transform: uppercase;
         }
         .subtitle {
-            font-size: 1rem;
+            font-size: clamp(1rem, 1.1vw, 1.125rem);
+            color: #2c2a28;
+            line-height: 1.9;
+            margin: 1rem auto;
+            max-width: 44rem;
+        }
+        .highlight-strong {
+            color: #8a8373;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+        }
+        .highlight-soft {
+            color: #4f4a44;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        .location {
+            margin-top: 1rem;
+            font-weight: 600;
             color: #555;
-            line-height: 1.8;
         }
         .home-link {
             display: inline-block;
-            margin-top: 2rem;
-            padding: 0.9rem 1.8rem;
+            margin-top: 2.5rem;
+            padding: 0.95rem 2rem;
             border-radius: 999px;
             background: #1c1b1a;
             color: #fff;
             text-decoration: none;
+            font-weight: 600;
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
         .home-link:hover {
@@ -49,9 +72,10 @@
 <body>
     <div class="container">
         <h1 class="title">À propos</h1>
-        <p class="subtitle">Je suis Yanmvisuals, photographe et vidéaste passionné basé dans le Var. Je travaille avec une direction artistique attentive et une approche visuelle qui met en valeur chaque projet.</p>
-        <p class="subtitle">Sur cette page, tu peux présenter ton parcours, ta vision, les types de projets que tu préfères, et les raisons pour lesquelles les clients te choisissent.</p>
-        <a class="home-link" href="/index.html">Retour au site</a>
+        <p class="subtitle">Je suis <span class="highlight-strong">Yanis Massard</span>, <span class="highlight-soft">photographe et vidéaste</span> basé à <span class="highlight-strong">Hyères / Toulon, Var</span>. Je crée des images qui mettent en valeur les <span class="highlight-soft">moments</span>, les <span class="highlight-strong">lieux</span> et les <span class="highlight-soft">projets</span> qui me tiennent à cœur.</p>
+        <p class="subtitle">Passionné par l'image depuis plusieurs années, je réalise des photos et des vidéos dans différents univers : <span class="highlight-strong">sport</span>, <span class="highlight-strong">automobile</span>, <span class="highlight-soft">événementiel</span> et <span class="highlight-soft">paysages</span>. J'ai travaillé sur différents projets allant de la <span class="highlight-strong">photographie sportive</span> à la création de <span class="highlight-soft">contenus visuels</span> pour les réseaux sociaux, avec l'objectif de raconter une histoire à travers chaque image.</p>
+        <p class="subtitle location">Basé à Hyères / Toulon, Var</p>
+        <a class="home-link" href="../index.html">Retour au site</a>
     </div>
 </body>
 </html>

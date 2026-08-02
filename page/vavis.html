@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avis | Yanmvisuals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -11,38 +12,80 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Inter, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: #f5f4f0;
             color: #1c1b1a;
+            padding: 1rem;
         }
         .container {
             text-align: center;
-            padding: 2rem;
+            padding: 2.2rem 2rem 2.5rem;
             max-width: 760px;
+            width: 100%;
+            background: #ffffff;
+            box-shadow: 0 28px 70px rgba(28, 27, 26, 0.08);
+            border-radius: 28px;
+            border: 1px solid rgba(28, 27, 26, 0.06);
         }
         .title {
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.8rem, 6vw, 4rem);
             margin-bottom: 1rem;
-            font-weight: 800;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: #1c1b1a;
+            text-transform: uppercase;
+        }
+        .tagline {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            color: #8a8373;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
         }
         .subtitle {
-            font-size: 1rem;
+            font-size: clamp(1rem, 1.05vw, 1.15rem);
+            color: #2c2a28;
+            line-height: 1.85;
+            margin: 1rem auto;
+            max-width: 44rem;
+        }
+        .highlight-strong {
+            color: #8a8373;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+        }
+        .highlight-soft {
             color: #555;
-            line-height: 1.8;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
         }
         .home-link {
             display: inline-block;
-            margin-top: 2rem;
-            padding: 0.9rem 1.8rem;
+            margin-top: 2.25rem;
+            padding: 1rem 2rem;
             border-radius: 999px;
             background: #1c1b1a;
             color: #fff;
             text-decoration: none;
+            font-weight: 600;
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
         .home-link:hover {
             transform: translateY(-2px);
             background: #3c3a39;
+        }
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.75rem 1.5rem 2rem;
+            }
+            .title {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                max-width: 100%;
+            }
         }
     </style>
 </head>

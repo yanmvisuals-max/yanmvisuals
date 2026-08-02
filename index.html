@@ -7,8 +7,8 @@
     <title>Yanmvisuals | Portfolio</title>
     <!-- Utilisation de Tailwind CSS pour un prototypage rapide et un design moderne -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Polices Google : Bebas Neue (marque), Syne (titres) et Inter (texte) -->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Polices Google : Bebas Neue (marque), Syne (titres), Inter (texte) et Playlist Script (script moderne) -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Playlist+Script&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Ajout de Lenis pour un défilement (smooth scroll) ultra-fluide -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
@@ -39,6 +39,18 @@
             background-color: #f5f4f0;
             color: #1c1b1a;
             -webkit-font-smoothing: antialiased;
+        }
+
+        .title-handwritten {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: inherit;
+            line-height: inherit;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            display: inline-block;
+            vertical-align: baseline;
+            text-transform: uppercase;
+            padding-left: 0.08em;
         }
 
         /* Lenis base styles */
@@ -458,8 +470,8 @@
                 <p class="text-dark font-semibold uppercase tracking-[0.32em] text-sm md:text-base mb-2">Basé</p>
                 <p class="text-accent text-base md:text-lg font-medium">À Toulon & dans le Var</p>
             </div>
-            <h1 class="font-brand text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-wide mb-8 uppercase">
-                Yanmvisuals
+            <h1 class="font-brand text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-wide mb-8">
+                Yanm<span class="title-handwritten">visuals</span>
             </h1>
             <p class="text-xl md:text-2xl text-gray-600 font-light max-w-2xl mx-auto mb-12">
                 Je crée des images qui racontent votre histoire, capturant l'essence de chaque moment avec une direction artistique unique.
