@@ -417,9 +417,10 @@
                 <a href="#" class="brand-link absolute left-4 font-display font-bold text-lg tracking-tight sm:text-xl">YM.</a>
                 <div class="nav-links hidden sm:flex items-center justify-center gap-3 text-[11px] font-medium sm:gap-4 sm:text-sm whitespace-nowrap max-w-[calc(100%-10rem)] mx-auto">
                     <a href="#top" class="transition duration-200 hover:text-accent">Accueil</a>
-                    <a href="vavis.html" class="transition duration-200 hover:text-accent">Avis</a>
                     <a href="#work" class="transition duration-200 hover:text-accent">Portfolio</a>
+                    <a href="apropos.html" class="transition duration-200 hover:text-accent">À propos</a>
                     <a href="#expertise" class="transition duration-200 hover:text-accent">Expertise</a>
+                    <a href="vavis.html" class="transition duration-200 hover:text-accent">Avis</a>
                     <a href="#contact" class="transition duration-200 hover:text-accent">Contact</a>
                 </div>
                 <button id="mobile-menu-open" class="mobile-menu-btn absolute right-4 inline-flex items-center justify-center bg-dark text-off-white rounded-full p-2 sm:hidden" aria-label="Ouvrir le menu">
@@ -439,9 +440,10 @@
             </button>
             <nav class="mobile-menu-links">
                 <a href="#top">Accueil</a>
-                <a href="vavis.html">Avis</a>
                 <a href="#work">Portfolio</a>
+                <a href="apropos.html">À propos</a>
                 <a href="#expertise">Expertise</a>
+                <a href="vavis.html">Avis</a>
                 <a href="#contact">Contact</a>
             </nav>
             <a href="#contact" class="mobile-menu-contact">Me contacter</a>
@@ -866,7 +868,7 @@
                     toggleMobileMenu(false);
                 }
             });
-            mobileMenuOverlay.querySelectorAll('a[href^="#"], a[href="vavis.html"]').forEach((link) => {
+            mobileMenuOverlay.querySelectorAll('a[href^="#"], a[href="vavis.html"], a[href="apropos.html"]').forEach((link) => {
                 link.addEventListener('click', () => toggleMobileMenu(false));
             });
         }
