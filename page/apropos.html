@@ -52,6 +52,28 @@
             font-weight: 600;
             color: #555;
         }
+        .mobile-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .mobile-nav a {
+            padding: 0.55rem 0.95rem;
+            border: 1px solid rgba(28, 27, 26, 0.12);
+            border-radius: 999px;
+            text-decoration: none;
+            color: #1c1b1a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .mobile-nav a.active,
+        .mobile-nav a:hover {
+            background: #1c1b1a;
+            color: #fff;
+        }
         .home-link {
             display: inline-block;
             margin-top: 2.5rem;
@@ -67,10 +89,24 @@
             transform: translateY(-2px);
             background: #3c3a39;
         }
+        @media (max-width: 640px) {
+            .mobile-nav {
+                margin-bottom: 1rem;
+            }
+            .mobile-nav a {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <nav class="mobile-nav" aria-label="Navigation mobile">
+            <a href="../index.html">Accueil</a>
+            <a href="apropos.html" class="active">À propos</a>
+            <a href="vavis.html">Avis</a>
+        </nav>
         <h1 class="title">À propos</h1>
         <p class="subtitle">Je suis <span class="highlight-strong">Yanis Massard</span>, <span class="highlight-soft">photographe et vidéaste</span> basé à <span class="highlight-strong">Hyères / Toulon, Var</span>. Je crée des images qui mettent en valeur les <span class="highlight-soft">moments</span>, les <span class="highlight-strong">lieux</span> et les <span class="highlight-soft">projets</span> qui me tiennent à cœur.</p>
         <p class="subtitle">Passionné par l'image depuis plusieurs années, je réalise des photos et des vidéos dans différents univers : <span class="highlight-strong">sport</span>, <span class="highlight-strong">automobile</span>, <span class="highlight-soft">événementiel</span> et <span class="highlight-soft">paysages</span>. J'ai travaillé sur différents projets allant de la <span class="highlight-strong">photographie sportive</span> à la création de <span class="highlight-soft">contenus visuels</span> pour les réseaux sociaux, avec l'objectif de raconter une histoire à travers chaque image.</p>

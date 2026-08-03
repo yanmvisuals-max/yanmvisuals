@@ -61,6 +61,28 @@
             font-family: 'Syne', sans-serif;
             font-weight: 600;
         }
+        .mobile-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+        .mobile-nav a {
+            padding: 0.55rem 0.95rem;
+            border: 1px solid rgba(28, 27, 26, 0.12);
+            border-radius: 999px;
+            text-decoration: none;
+            color: #1c1b1a;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .mobile-nav a.active,
+        .mobile-nav a:hover {
+            background: #1c1b1a;
+            color: #fff;
+        }
         .home-link {
             display: inline-block;
             margin-top: 2.25rem;
@@ -86,11 +108,23 @@
             .subtitle {
                 max-width: 100%;
             }
+            .mobile-nav {
+                margin-bottom: 1rem;
+            }
+            .mobile-nav a {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <nav class="mobile-nav" aria-label="Navigation mobile">
+            <a href="../index.html">Accueil</a>
+            <a href="apropos.html">À propos</a>
+            <a href="vavis.html" class="active">Avis</a>
+        </nav>
         <h1 class="title">Avis clients</h1>
         <p class="subtitle">Cette page sera bientôt enrichie avec les retours de mes clients. Pour l'instant, elle reste volontairement simple et ouverte à la suite.</p>
         <a class="home-link" href="/index.html">Retour au site</a>

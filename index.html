@@ -453,9 +453,9 @@
             <nav class="mobile-menu-links">
                 <a href="#top">Accueil</a>
                 <a href="#work">Portfolio</a>
-                <a href="apropos.html">À propos</a>
+                <a href="page/apropos.html">À propos</a>
                 <a href="#expertise">Expertise</a>
-                <a href="vavis.html">Avis</a>
+                <a href="page/vavis.html">Avis</a>
                 <a href="#contact">Contact</a>
             </nav>
             <a href="#contact" class="mobile-menu-contact">Me contacter</a>
@@ -880,7 +880,7 @@
                     toggleMobileMenu(false);
                 }
             });
-            mobileMenuOverlay.querySelectorAll('a[href^="#"], a[href="vavis.html"], a[href="apropos.html"]').forEach((link) => {
+            mobileMenuOverlay.querySelectorAll('a[href^="#"], a[href="page/vavis.html"], a[href="page/apropos.html"]').forEach((link) => {
                 link.addEventListener('click', () => toggleMobileMenu(false));
             });
         }
